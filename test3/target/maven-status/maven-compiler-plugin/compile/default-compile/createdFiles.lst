@@ -1,0 +1,7 @@
+metier\Metier.class
+web\forms\Form.class
+Trame\TrameLidar.class
+Trame\Trame.class
+Trame\TrameMoteur.class
+exception\TrameException.class
+Trame\TrameGPS.class

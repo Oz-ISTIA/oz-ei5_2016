@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <!--<script type="text/javascript" src="jquery/js/jquery-1.9.0.min.js"></script> -->
+        <h1>Hello Robot!</h1>
+        <h:form id="idformulaire">
+            <h2>Commande Robot !</h2>
+            <h:panelGrid columns="5">
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup>
+                    <p:commandButton id="btnAvancer" value="Avance" action="#{form.avancerRobot()}" ></p:commandButton>
+                </h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup>
+                    <p:commandButton id="btnGauche" value="Gauche" action="#{form.gaucheRobot()}" ></p:commandButton>
+                </h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup>
+                    <p:commandButton id="btnDroit" value="Droite" action="#{form.droitRobot()}" ></p:commandButton>
+                </h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup>
+                    <h:inputText id="idAdresse" value="#{form.adresse}"/><br/>
+                    <p:commandButton id="connection" value="Connection" action="#{form.Connect()}" onclick="launchTrame()"></p:commandButton>
+                    <h:outputText value="#{form.adresse}"></h:outputText>
+                </h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup>
+                    <p:commandButton id="btnReculer" value="Recule" action="#{form.reculerRobot()}" ></p:commandButton>
+                </h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+                <h:panelGroup></h:panelGroup>
+            </h:panelGrid>
+            <h2>Lidar !</h2>
+            <canvas id="myCanvas" width="900px" height="500px" style="border:1px solid #000000;">Canvas not supported</canvas>
+            <p:remoteCommand name="getTrame"
+                             action="#{form.lectureTrames()}"
+                             oncomplete="refresh(xhr,status,args);" ></p:remoteCommand>                             
+        </h:form>
+        <br />
+    </h:body>
+    <script type="text/javascript">
+        function refresh(xhr,status,args){
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            ctx.clearRect(0, 0, c.width, c.height); 
+            //{form.lectureTrames()};
+            var arr = JSON.parse(args.trame);
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 1;
+            var i = 0;
+            for (i = 45; i &lt; 226; i++) {
+                ctx.strokeRect(450 - (arr[i] / 10) * Math.cos((i - 45) * 3.14 / 180), 500 - (arr[i] / 10) * Math.sin((i - 45) * 3.14 / 180), 5, 5);
+            }
+            ctx.stroke();   
+        }
+        function launchTrame(){
+            setInterval("getTrame()",1000);
+        }
+    </script>
+</html>
